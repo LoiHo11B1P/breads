@@ -14,6 +14,10 @@ app.engine('jsx', require('express-react-views').createEngine())
 app.use(express.static('public'))
 // MIDDLEWARE
 app.use(express.urlencoded({extended: true}))
+// DEPENDENCIES
+const methodOverride = require('method-override')
+// MIDDLEWARE
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
     res.send('Welcome to Awesome App about Breads');
