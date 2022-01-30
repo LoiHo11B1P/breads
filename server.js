@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 
 
 require('dotenv').config();
@@ -23,11 +24,24 @@ app.get('/', (req, res) => {
     res.send('Welcome to Awesome App about Breads');
 })
 
+// Mongoose for Mongodb
+// make connection
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
+    () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
+  )
+
+
 // Breads
 /* If user have /bread ... in url then use the breadsController to 
     determine the appropriate action
 */
 const breadsController = require('./controllers/breads_controllers.js')
+
+// BAKER Controller
+const bakersController = require('./controllers/bakers_controller.js');
+
+// Tell app to use these controller to handel routing
+app.use('/bakers', bakersController)
 
 app.use('/breads', breadsController)
 
