@@ -6,17 +6,22 @@ const Baker = require('../models/baker.js')
 // INDEX
 // INDEX
 breads.get('/', (req, res) => {
-
-  Bread.find()
+  Baker.find()
+    .then(foundBakers => {
+      Bread.find()
     .then(foundBreads => {
-      console.log(foundBreads)
+      
       res.render('Index',
       {
         breads: foundBreads,
+        bakers: foundBakers,
         title: 'Index Page Hello'
       }
     )
   })
+
+    })
+  
 })
 
 // MASS ADD get
@@ -56,18 +61,26 @@ breads.get('/new', (req, res) => {
 
 // EDIT
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id) 
-    .then(foundBread => { 
-      res.render('edit', {
-        bread: foundBread 
-      })
+  Baker.find()
+    .then(foundBakers => {
+        Bread.findById(req.params.id)
+          .then(foundBread => {
+            res.render('edit', {
+                bread: foundBread, 
+                bakers: foundBakers 
+            })
+          })
     })
 })
 
 // SHOW
 // SHOW
 breads.get('/:id', (req, res) => {
+  // use model Bread with mongoos findByID method to get a specific bread by id
   Bread.findById(req.params.id)
+      // .populate('baker') bring back all information about the baker
+      // related to the bread, not just ID
+      .populate('baker')
       .then(foundBread => {
         const bakedBy = foundBread.getBakedBy() 
         console.log(bakedBy)
