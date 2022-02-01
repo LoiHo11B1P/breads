@@ -3,25 +3,24 @@ const breads = express.Router()
 const Bread = require('../models/bread.js')
 const Baker = require('../models/baker.js')
 
-// INDEX
-// INDEX
-breads.get('/', (req, res) => {
-  Baker.find()
-    .then(foundBakers => {
-      Bread.find()
-    .then(foundBreads => {
-      
-      res.render('Index',
-      {
-        breads: foundBreads,
-        bakers: foundBakers,
-        title: 'Index Page Hello'
-      }
-    )
+breads.get('/', async (req, res) => {
+  const foundBakers = await Baker.find().lean() 
+  const foundBreads = await Bread.find().limit(2).lean() 
+  res.render('index', {
+    breads: foundBreads,
+    bakers: foundBakers,
+    title: 'Index Page'
   })
+})
 
-    })
-  
+breads.get('/all_breads', async (req, res) => {
+  const foundBakers = await Baker.find()
+  const foundBreads = await Bread.find()
+  res.render('index', {
+    breads: foundBreads,
+    bakers: foundBakers,
+    title: 'Index Page'
+  })
 })
 
 // MASS ADD get
@@ -73,7 +72,7 @@ breads.get('/:id/edit', (req, res) => {
     })
 })
 
-// SHOW
+
 // SHOW
 breads.get('/:id', (req, res) => {
   // use model Bread with mongoos findByID method to get a specific bread by id
@@ -89,6 +88,8 @@ breads.get('/:id', (req, res) => {
         })
       })
     })
+
+
 // DELETE
 breads.delete('/:id', (req, res) => {
   Bread.findByIdAndDelete(req.params.id) 
@@ -96,6 +97,8 @@ breads.delete('/:id', (req, res) => {
       res.status(303).redirect('/breads')
     })
 })
+
+
 
 // UPDATE
 breads.put('/:id', (req, res) => {
