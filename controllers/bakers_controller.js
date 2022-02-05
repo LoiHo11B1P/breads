@@ -3,6 +3,12 @@ const express = require('express')
 const baker = express.Router()
 const Baker = require('../models/baker.js')
 const bakerSeedData = require('../models/baker_seed.js'); // list of mock up bakers
+// DATA SEEDER
+baker.get('/data/seed', async (req, res) => {
+    await Baker.deleteMany()
+    Baker.insertMany(bakerSeedData)
+        .then(res.redirect('/breads'))
+})
 
 // delete
 baker.delete('/:id', (req, res) => {
@@ -26,12 +32,6 @@ baker.get('/:id', (req, res) => {
         })
 })
 
-// DATA SEEDER
-baker.get('/data/seed', async (req, res) => {
-    await Baker.deleteMany()
-    Baker.insertMany(bakerSeedData)
-        .then(res.redirect('/breads'))
-})
 
 // INDEX
 baker.get('/',(req, res) => {

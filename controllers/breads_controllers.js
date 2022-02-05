@@ -14,7 +14,34 @@ breads.get('/', async (req, res) => {
 })
 
 breads.get('/all_breads', async (req, res) => {
-  const foundBakers = await Baker.find()
+  const foundBakers = await Baker.find
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ()
   const foundBreads = await Bread.find()
   res.render('index', {
     breads: foundBreads,
