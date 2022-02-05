@@ -50,4 +50,4 @@ app.get('*', (req, res) => {
     res.send('404')
   })
   
-app.listen()
+app.listen(PORT)
